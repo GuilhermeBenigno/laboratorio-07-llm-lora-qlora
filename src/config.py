@@ -1,0 +1,12 @@
+MODEL_NAME = "meta-llama/Llama-2-7b-hf"
+
+# LoRA
+LORA_R = 64
+LORA_ALPHA = 16
+LORA_DROPOUT = 0.1
+
+# Treino
+BATCH_SIZE = 2
+EPOCHS = 1
+LR = 2e-4
+WARMUP_RATIO = 0.03
