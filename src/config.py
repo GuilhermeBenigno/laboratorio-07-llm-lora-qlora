@@ -1,4 +1,4 @@
-MODEL_NAME = "meta-llama/Llama-2-7b-hf"
+MODEL_NAME = "microsoft/phi-2"
 
 # LoRA
 LORA_R = 64
