@@ -1,28 +1,38 @@
+import os
 import json
-import random
+from openai import OpenAI
+
+client = OpenAI(api_key="SUA_API_KEY_AQUI")
+
+os.makedirs("data", exist_ok=True)
 
 def gerar_dataset(n=50):
-    data = []
+    dataset = []
 
     for i in range(n):
-        prompt = f"Explique o conceito de programação número {i}"
-        response = f"O conceito {i} envolve lógica, algoritmos e boas práticas."
+        prompt = "Crie uma pergunta e resposta sobre programação para treinamento de IA. Retorne em JSON com 'prompt' e 'response'."
 
-        data.append({
-            "prompt": prompt,
-            "response": response
-        })
+        resposta = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}]
+        )
 
-    return data
+        conteudo = resposta.choices[0].message.content
+
+        try:
+            item = json.loads(conteudo)
+            dataset.append(item)
+        except:
+            print("Erro ao converter, pulando...")
+
+    return dataset
 
 
 if __name__ == "__main__":
-    dataset = gerar_dataset()
-
-    random.shuffle(dataset)
+    data = gerar_dataset()
 
     with open("data/dataset.jsonl", "w") as f:
-        for item in dataset:
+        for item in data:
             f.write(json.dumps(item) + "\n")
 
-    print("Dataset gerado!")
+    print("Dataset gerado com OpenAI!")
